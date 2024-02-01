@@ -5,13 +5,27 @@ from androguard.core.axml import AXMLPrinter
 import androguard.util as test
 import re
 from androguard.core.apk import APK
+import apk2java
+import sys
+
 test.set_log("CRITICAL")
 class Mobile_analysis:
     def __init__(self,apk_path):
         self.apk = apk_path
 
-    def Decompiler():
-        pass
+    def Decompiler(self):
+        if not os.path.exists(self.apk):
+            print("[-] Error: couldn't find the apk!")
+        else:
+            if os.path.isdir("./JavaCode"):
+                print("[+] Old Directory found, Deleting...")
+                print("[+] Extracting Data...")
+                shutil.rmtree("./JavaCode")
+            apk2java.decompile(self.apk, "./JavaCode")
+
+    # def get_urls():
+
+
     def decompiling(self):
         if not os.path.exists(self.apk):
             print("[-] Error: couldn't find the apk!")
@@ -88,6 +102,8 @@ class Mobile_analysis:
             print("[+] Public key algorithm:", cert.hash_algo)
          
             
-test = Mobile_analysis("/home/malikhelpag/Desktop/projects/AMC-Mobile/amc.apk")
-test.decompiling()
-test.CheckCertificate()
+test = Mobile_analysis("./test.apk")
+# test.decompiling()
+# test.CheckCertificate()
+
+test.Decompiler()

@@ -1,10 +1,10 @@
 import requests
 import re
 from bs4 import BeautifulSoup
-from urllib.parse import quote_plus
 import socket
 import ipaddress
-import warnings
+import csv
+
 
 class Crt:
     """Get the subdomains from CRT.sh"""
@@ -44,8 +44,7 @@ class Crt:
         data=self.GetData()
         subs = self.filterdata(data=data)
         subdomains = self.sortanduniqe(subs)
-        for i in subdomains:
-            print(i)
+        return subdomains
 class DNSBrute:
     """Bruteforce Subdomains"""
     def __init__(self, domain):
@@ -92,13 +91,13 @@ class waybackmachine:
                 subdomains.append(link.replace('http://','').split('/')[0])
             else:
                 subdomains.append(link)
-        for i in list(set(subdomains)):
-            print(i)
+        # for i in list(set(subdomains)):
+        #     print(i)
         return list(set(subdomains))
     def execute(self):
         data = self.GetData()
-        self.FilterSubdomains(data)
-
+        subdomains = self.FilterSubdomains(data)
+        return subdomains    
 
 
 
@@ -180,8 +179,8 @@ class Mobile_lookup:
 # web Crawler
 class Web_Crawler:
     """Web Crawler"""
-    def __init__(self, domain):
-        self.domain = domain
+    def __init__(self, subdomainlst):
+        self.Sublst = subdomainlst
     def checkHttp():
         pass
     def collectwords():
@@ -192,20 +191,49 @@ class Web_Crawler:
         pass
     def checkforKnownpaths():
         pass
-    
+
+def VerifySubdomains(subdomainlst):
+    IPsAndSub = []
+    for host in subdomainlst:
+        test = []
+        try:
+            ipaddress = socket.gethostbyname(host)
+            if ipaddress:
+                print(ipaddress)
+                test.append(host)
+                test.append(ipaddress)
+                IPsAndSub.append(test)
+            else:
+                continue
+        except:
+            pass    
+       
+    return IPsAndSub        
+def WriteInCSV(lst):
+    with open('file.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        for i in lst:
+            writer.writerow(i)
+        
 # Class Cloud Enum
 # whois Database Lookup
 # Google dork site:pastebin.com | site:paste2.org | site:pastehtml.com | site:codebeautify.io | site:slexy.org | site:justpaste.it | site:codepen.io | site:github | site: gitlab.com   "domain"
 # Checking http or https                  
 
 #
-# test = Crt("iairgroup.com")
-# Crt.execute(self=test)
-# test = DNSBrute("iairgroup.com")
-# test.execute()
-# test = waybackmachine("iairgroup.com")
-# test.execute()
-        
+AllColSubDom = []    
+crt = Crt("nadec.com.sa")
+CrtSub = Crt.execute(self=crt)
+for i in CrtSub:
+    AllColSubDom.append(i)
+# dnsbrute = DNSBrute("iairgroup.com")
+# dnsbrute.execute()
+wayback = waybackmachine("nadec.com.sa")
+waybackSub = wayback.execute()
+for i in waybackSub:
+    AllColSubDom.append(i)
+Finallst = VerifySubdomains(AllColSubDom)
+WriteInCSV(Finallst)
 # test = Reverse_IP_lookup("iairgroup.com")
 # test.execute()
 # test = Mobile_lookup("instagram.com")
