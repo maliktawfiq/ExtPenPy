@@ -92,7 +92,8 @@ class waybackmachine:
                 subdomains.append(link.replace('http://','').split('/')[0])
             else:
                 subdomains.append(link)
-        print(list(set(subdomains)))        
+        for i in list(set(subdomains)):
+            print(i)
         return list(set(subdomains))
     def execute(self):
         data = self.GetData()
@@ -181,6 +182,16 @@ class Web_Crawler:
     """Web Crawler"""
     def __init__(self, domain):
         self.domain = domain
+    def checkHttp():
+        pass
+    def collectwords():
+        pass
+    def Takescreenshot():
+        pass
+    def headers():
+        pass
+    def checkforKnownpaths():
+        pass
     
 # Class Cloud Enum
 # whois Database Lookup
@@ -188,14 +199,14 @@ class Web_Crawler:
 # Checking http or https                  
 
 #
-# test = Crt("")
+# test = Crt("iairgroup.com")
 # Crt.execute(self=test)
-# test = DNSBrute("helpag.com")
+# test = DNSBrute("iairgroup.com")
 # test.execute()
-# test = waybackmachine("helpag.com")
+# test = waybackmachine("iairgroup.com")
 # test.execute()
         
-# test = Reverse_IP_lookup("google.com")
+# test = Reverse_IP_lookup("iairgroup.com")
 # test.execute()
 # test = Mobile_lookup("instagram.com")
 # test.execute()
