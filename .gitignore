@@ -3,3 +3,5 @@ apk_decomiled
 test.apk.cache
 JavaCode
 file.csv
+*.apk
+*.zip
