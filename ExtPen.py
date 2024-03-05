@@ -362,7 +362,19 @@ def check_dns_records(domain):
 # linkedin2username
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Recon Tool")
+    logo = """
+  ______        _    _____              _____        
+ |  ____|      | |  |  __ \            |  __ \       
+ | |__   __  __| |_ | |__) |___  _ __  | |__) |_   _ 
+ |  __|  \ \/ /| __||  ___// _ \| '_ \ |  ___/| | | |
+ | |____  >  < | |_ | |   |  __/| | | || |    | |_| |
+ |______|/_/\_\ \__||_|    \___||_| |_||_|     \__, |
+                                                __/ |
+                                               |___/                                                                                          
+"""
+    print_color(logo,colors.RED)
+    print("\n")
+    parser = argparse.ArgumentParser(description="This tool is to finish the recon phase quicly XD")
     subparsers = parser.add_subparsers(dest="mode", help="Modes of reconnaissance")
 
     # Passive subparser
