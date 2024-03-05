@@ -10,6 +10,7 @@ import whois
 from dns import zone, resolver, query, exception, rdatatype
 import Mobile
 import threading
+
 class colors:
     RESET = '\033[0m'
     RED = '\033[91m'
@@ -302,7 +303,7 @@ def query_whois(domain):
             if isinstance(value, list):
                 value = ', '.join(map(str, value))
             print_color(f"[+] {key.capitalize()}: {value}",colors.PURPLE)
-    except whois.parser.PywhoisError as e:
+    except Exception as e:
         print(f"Error: {e}")
 def perform_zone_transfer(domain, nameserver):
     try:
@@ -406,7 +407,7 @@ if __name__ == "__main__":
         for i in Finallst:
             print_color(f"{i[0]}\t\t{i[1]}",colors.PURPLE)    
         if args.csv != None:
-            WriteInCSV(list(set(AllColSubDom)),args.csv)
+            WriteInCSV(Finallst,args.csv)
         revdnslookup = Reverse_IP_lookup(args.domain)
         ipranges = revdnslookup.GetIPRange()
         print_color(f"{args.domain} IP address ranges:",colors.BOLD)
