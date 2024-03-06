@@ -36,7 +36,7 @@
 ```bash
 git clone https://github.com/maliktawfiq/ExtPenPy.git
 cd ExtPenPy
-pip install -r requierments.txt
+pip install -r requirements.txt
 ```
 
 ### how to use:
