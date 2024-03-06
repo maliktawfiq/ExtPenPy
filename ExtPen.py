@@ -389,7 +389,7 @@ if __name__ == "__main__":
 """
     print_color(logo,colors.RED)
     print("\n")
-    parser = argparse.ArgumentParser(description="This tool is to finish the recon phase quicly XD")
+    parser = argparse.ArgumentParser(description="This tool will help you to finish the recon phase quickly XD")
     subparsers = parser.add_subparsers(dest="mode", help="Modes of reconnaissance")
 
     # Passive subparser
