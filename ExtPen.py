@@ -267,7 +267,22 @@ class Web_Crawler:
         pass
     def checkforKnownpaths():
         pass
-
+def Regex(domain):
+    pastebins = f'site:pastebin.com | site:paste2.org | site:pastehtml.com | site:codebeautify.io | site:slexy.org | site:justpaste.it | site:codepen.io "{domain}"'
+    print_color("1- Pastebins check:",colors.BOLD)
+    print_color(pastebins,colors.PURPLE)
+    SenExt = f'site:"{domain}" ext:log | ext:txt | ext:json | ext:conf | ext:cnf | ext:ini | ext:env | ext:sh | ext:bak | ext:backup | ext:swp | ext:old | ext:~ | ext:git | ext:htapasswd | ext:htaccess'
+    print_color("2- senstive extenstions check:",colors.BOLD)
+    print_color(SenExt,colors.PURPLE)
+    AdminPages= f'inurl:admin site:"{domain}"'
+    print_color("3- Admin pages check:",colors.BOLD)
+    print_color(AdminPages,colors.PURPLE)
+    APIDOCS = f'inurl:apidoc | inurl:api-doc | inurl:swagger | inurl:api-explorer site:"{domain}"'
+    print_color("4- API documentation check:",colors.BOLD)
+    print_color(APIDOCS,colors.PURPLE)
+    CloudStor = f'site:s3.amazonaws.com | site:blob.core.windows.net | site:googleapis.com | site:drive.google.com | site:dev.azure.com | onedrive.live.com | site:digitaloceanspases.com | site:sharepoint.com "{domain}"'
+    print_color("5- Cloud storages check:",colors.BOLD)
+    print_color(CloudStor,colors.PURPLE)
 def VerifySubdomains(subdomainlst):
     IPsAndSub = []
     for host in list(set(subdomainlst)):
@@ -435,7 +450,11 @@ if __name__ == "__main__":
         print_color("[+] Performing zone transfer",colors.BOLD)
         for i in namservers:
             perform_zone_transfer(args.domain,i)  
-        check_dns_records(args.domain)      
+        check_dns_records(args.domain)
+        print_color("Now to finish up the recon phase check the following interesting google dorks:",colors.BOLD)
+        Regex(args.domain)
+        print_color("Finally do not forget to check github and gitlab. Ref: https://book.hacktricks.xyz/generic-methodologies-and-resources/external-recon-methodology/github-leaked-secrets",colors.BLUE)
+        print_color("          Happy Hacking!           ",colors.GREEN)
     elif args.mode == "active":
         AllColSubDom = []
         rapiddnss = rapiddns(args.domain)
@@ -492,8 +511,13 @@ if __name__ == "__main__":
         for i in DNSbrtSub:
             Finallst.append(i)
         if args.csv != None:
-            WriteInCSV(Finallst,args.csv)                
+            WriteInCSV(Finallst,args.csv)
+        print_color("Now to finish up the recon phase check the following interesting google dorks:",colors.BOLD)
+        Regex(args.domain)
+        print_color("Finally do not forget to check github and gitlab. Ref: https://book.hacktricks.xyz/generic-methodologies-and-resources/external-recon-methodology/github-leaked-secrets",colors.BLUE)
+        print_color("          Happy Hacking!           ",colors.GREEN)
     elif args.mode == "apk":
         MobileAn = Mobile.Mobile_analysis(args.apk)
         MobileAn.execute()
+        print_color("          Happy Hacking!           ",colors.GREEN)
 
