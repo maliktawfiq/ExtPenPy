@@ -114,7 +114,7 @@ class Mobile_analysis:
             if len(password[0]) == 0:
                 continue
             else:
-                f.write(password[1]+'\n')
+                f.write(password[1]+'\t'+' '.join(str(x) for x in password[0])+'\n')
         f.close()
         print_color("[+] Kindly check a file called 'Filestobechecked.txt' for senstive paths to be checked",colors.GREEN)
         # print("[+] root Found:")
@@ -204,6 +204,7 @@ class Mobile_analysis:
     def execute(self):
         self.Decompiler()
         self.decompiling()
+        self.CheckCertificate()
         self.code_inspection("./JavaCode")
      
         

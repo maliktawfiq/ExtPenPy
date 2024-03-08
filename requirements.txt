@@ -1,5 +1,5 @@
-androguard==4.1.0
-apk2java==0.0.5
-dnspython==2.6.1
-python-whois==0.8.0
-requests==2.31.0
+androguard
+apk2java
+dnspython
+python-whois
+requests
