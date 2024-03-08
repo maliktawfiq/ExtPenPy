@@ -194,18 +194,18 @@ class Mobile_analysis:
         
         certificates = a.get_certificates_v2()
         for cert in certificates:
-            print_color("[+] Subject: "+ cert.subject,colors.PURPLE)
-            print_color("[+] Issuer: "+ cert.issuer,colors.PURPLE)
-            print_color("[+] Serial number: "+ cert.serial_number,colors.PURPLE)
-            print_color("[+] Not valid before: "+ cert.not_valid_before,colors.PURPLE)
-            print_color("[+] Not valid after: "+ cert.not_valid_after,colors.PURPLE)
-            print_color("[+] Signature algorithm: "+ cert.signature_algo,colors.PURPLE)
-            print_color("[+] Public key algorithm: "+ cert.hash_algo,colors.PURPLE)
+            print_color("[+] Subject: "+ str(cert.subject),colors.PURPLE)
+            print_color("[+] Issuer: "+ str(cert.issuer),colors.PURPLE)
+            print_color("[+] Serial number: "+ str(cert.serial_number),colors.PURPLE)
+            print_color("[+] Not valid before: "+ str(cert.not_valid_before),colors.PURPLE)
+            print_color("[+] Not valid after: "+ str(cert.not_valid_after),colors.PURPLE)
+            print_color("[+] Signature algorithm: "+ str(cert.signature_algo),colors.PURPLE)
+            print_color("[+] Public key algorithm: "+ str(cert.hash_algo),colors.PURPLE)
     def execute(self):
-        self.Decompiler()
-        self.decompiling()
+        # self.Decompiler()
+        # self.decompiling()
         self.CheckCertificate()
-        self.code_inspection("./JavaCode")
+        # self.code_inspection("./JavaCode")
      
         
             
