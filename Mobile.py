@@ -202,10 +202,10 @@ class Mobile_analysis:
             print_color("[+] Signature algorithm: "+ str(cert.signature_algo),colors.PURPLE)
             print_color("[+] Public key algorithm: "+ str(cert.hash_algo),colors.PURPLE)
     def execute(self):
-        # self.Decompiler()
-        # self.decompiling()
+        self.Decompiler()
+        self.decompiling()
         self.CheckCertificate()
-        # self.code_inspection("./JavaCode")
+        self.code_inspection("./JavaCode")
      
         
             
