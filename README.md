@@ -15,7 +15,8 @@
 2. **Active:** 
     - Collecting  subdomains (with brute forcing)
     - All the passive stuff
-      **TODO**:
+
+    **TODO**:
     - Cloud enumeration
     - Web Crawling
     - Headers check
