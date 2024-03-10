@@ -232,7 +232,7 @@ class rapiddns:
             subdomainslist = re.findall(pattern,resprapiddns.content.decode('utf-8'))   
             return subdomainslist 
         except Exception as error:
-            print_color("Error",colors.Red)
+            print_color("Error",colors.RED)
 class Mobile_lookup:
     """Mobile analysis"""
     def __init__(self, domain):
