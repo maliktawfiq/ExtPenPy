@@ -87,7 +87,7 @@ class Mobile_analysis:
         for root, dirs, files in os.walk(directory):
             for filename in files:
                 filepath = os.path.join(root, filename)
-                # print(filepath)
+              
                 if os.path.isfile(filepath):
                     with open(filepath, 'rb') as file:
                         content = file.read()
@@ -117,9 +117,7 @@ class Mobile_analysis:
                 f.write(password[1]+'\t'+' '.join(str(x) for x in password[0])+'\n')
         f.close()
         print_color("[+] Kindly check a file called 'Filestobechecked.txt' for senstive paths to be checked",colors.GREEN)
-        # print("[+] root Found:")
-        # # for root in root_detection:
-        # #     print(root)
+
 
 
     def decompiling(self):
@@ -172,15 +170,7 @@ class Mobile_analysis:
                     print_color("[+] " + i.decode("utf-8"),colors.PURPLE)
         except Exception as error:
             print("[-] Error parsing the AndroidManifest.xml file: ",error)
-        
-        # try:
-        #     with open("./apk_decomiled/res/values/strings.xml", 'rb') as f:
-        #             data = f.read()
-        #     axml = AXMLPrinter(data)
-        #     strings_xml = axml.get_xml() #TODO print strings.xml
-        # except Exception as error:
-        #     print("[-] strings.xml Error: ",error)
-        
+ 
             
         
     def CheckCertificate(self):
@@ -209,7 +199,3 @@ class Mobile_analysis:
      
         
             
-# test = Mobile_analysis("./test.apk")
-
-
-# test.execute()

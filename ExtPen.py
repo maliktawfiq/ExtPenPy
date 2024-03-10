@@ -41,27 +41,32 @@ class Crt:
         except Exception as error:
             print("[-] An exception occurred6: ",error)        
     def filterdata(self,data):
-        # print(str(data))
-        subdomains = []
-        domains = re.findall(br'<TD>.*?</TD>',data)
-        for domain in domains:
-            domain = domain.replace(b'<TD>',b'')
-            domain = domain.replace(b'</TD>',b'')
-            if self.domain in str(domain):    
-                if b'<BR>' in domain:
-                    for i in domain.split(b'<BR>'):
-                        subdomains.append(i)
+        try:
+            subdomains = []
+            domains = re.findall(br'<TD>.*?</TD>',data)
+            for domain in domains:
+                domain = domain.replace(b'<TD>',b'')
+                domain = domain.replace(b'</TD>',b'')
+                if self.domain in str(domain):    
+                    if b'<BR>' in domain:
+                        for i in domain.split(b'<BR>'):
+                            subdomains.append(i)
+                    else:
+                        subdomains.append(domain)
                 else:
-                    subdomains.append(domain)
-            else:
-                continue 
-        return subdomains      
+                    continue 
+            return subdomains
+        except:
+            pass      
     def sortanduniqe(self,lst):
-        sorted = list(set(lst))
-        final = []
-        for i in sorted:
-            final.append(i.decode("utf-8"))
-        return final
+        try:
+            sorted = list(set(lst))
+            final = []
+            for i in sorted:
+                final.append(i.decode("utf-8"))
+            return final
+        except:
+            pass
     def execute(self):
         data=self.GetData()
         subs = self.filterdata(data=data)
@@ -92,8 +97,7 @@ class DNSBrute:
                 pass
             except resolver.NoAnswer:
                 pass
-            except Exception as e:    
-                print(f"Error occurred for {hostname}: {e}")
+            except Exception as e:                    
                 pass
     def BruteForce(self,numofthreads,wordlist):
         threads = []
@@ -150,8 +154,6 @@ class waybackmachine:
                 subdomains.append(link.replace('http://','').split('/')[0])
             else:
                 subdomains.append(link)
-        # for i in list(set(subdomains)):
-        #     print(i)
         return list(set(subdomains))
     def execute(self):
         data = self.GetData()
@@ -252,21 +254,7 @@ class Mobile_lookup:
         except Exception as error:
             print_color("[-] An exception occurred4: "+ error,colors.RED)
     
-# web Crawler
-class Web_Crawler:
-    """Web Crawler"""
-    def __init__(self, subdomainlst):
-        self.Sublst = subdomainlst
-    def checkHttp(self):
-        pass            
-    def collectwords():
-        pass
-    def Takescreenshot():
-        pass
-    def headers():
-        pass
-    def checkforKnownpaths():
-        pass
+
 def Regex(domain):
     pastebins = f'site:pastebin.com | site:paste2.org | site:pastehtml.com | site:codebeautify.io | site:slexy.org | site:justpaste.it | site:codepen.io "{domain}"'
     print_color("1- Pastebins check:",colors.BOLD)
@@ -283,7 +271,7 @@ def Regex(domain):
     CloudStor = f'site:s3.amazonaws.com | site:blob.core.windows.net | site:googleapis.com | site:drive.google.com | site:dev.azure.com | onedrive.live.com | site:digitaloceanspases.com | site:sharepoint.com "{domain}"'
     print_color("5- Cloud storages check:",colors.BOLD)
     print_color(CloudStor,colors.PURPLE)
-def VerifySubdomains(subdomainlst):
+def VerifySubdomains(subdomainlst,flag):
     IPsAndSub = []
     for host in list(set(subdomainlst)):
         test =[]
@@ -296,10 +284,15 @@ def VerifySubdomains(subdomainlst):
             else:
                 continue
         except socket.gaierror:
-            print_color(f"Unable to resolve hostname: {host}",colors.RED)  
+            if flag:
+                print_color(f"Unable to resolve hostname: {host}",colors.RED)
+            else:
+                pass  
         except Exception as error:
-            print_color(f"An exception occurred6: {error}",colors.RED)     
-
+            if flag:
+                print_color(f"An exception occurred6: {error}",colors.RED)     
+            else:
+                pass
        
     return IPsAndSub               
        
@@ -350,13 +343,11 @@ def get_name_servers(domain):
 def check_dns_records(domain):
     try:
         resolvers = resolver.Resolver()
-           # Query TXT record
         txt_records = resolvers.resolve(domain, "TXT")
         if txt_records.response.answer:
             print_color("\nTXT Records:",colors.BOLD)
             for record in txt_records:
                 print_color(record.to_text(),colors.PURPLE)
-        # Query DMARC record
         dmarc_records = resolvers.resolve(f"_dmarc.{domain}", "TXT")
         if dmarc_records.response.answer:
             print_color("DMARC Records:",colors.BOLD)
@@ -370,13 +361,27 @@ def check_dns_records(domain):
         print("Domain not found.")
     except Exception as e:
         print(f"Error: {e}")
-# Site:pastebin.com | site:paste2.org | site:pastehtml.com | site:codebeautify.io | site:slexy.org | site:justpaste.it | site:codepen.io | site:github | site: gitlab.com   "wizardcyber.com"
-# Class Cloud Enum
-# Google dork site:pastebin.com | site:paste2.org | site:pastehtml.com | site:codebeautify.io | site:slexy.org | site:justpaste.it | site:codepen.io | site:github | site: gitlab.com   "domain"
-# Checking http or https                  
-# linkedin2username
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description="This tool will help you to finish the recon phase quickly XD")
+    subparsers = parser.add_subparsers(dest="mode", help="Modes of reconnaissance")
+
+ 
+    passive_parser = subparsers.add_parser("passive", help="Passive reconnaissance mode which include collecting subdomains, checking whois database, zonetransfer, DNSrecordcheck, reverseDNS lookup, getting ip address range")
+    passive_parser.add_argument("-d", "--domain", required=True, help="Domain for active reconnaissance")
+    passive_parser.add_argument("--pip","-p",action='store_true',help="To allow piping the subdomain output to another tool")
+    passive_parser.add_argument("--csv",help="Specify the filename,to save the subdomains in csv")
+ 
+    active_parser = subparsers.add_parser("active", help="Active reconnaissance mode which include collecting subdomains(passive and active), cloud enumeration , web crawling and analysis, taking screenshots, headers check, and the passive stuff")
+    active_parser.add_argument("-d", "--domain", required=True, help="Domain for active reconnaissance")
+    active_parser.add_argument("--csv",help="Specify the filename,to save the subdomains in csv")
+    active_parser.add_argument("--threads","-t",help="Specify the number of threads for dns bruteforcing. DEFAULT=10")
+    active_parser.add_argument("--wordlist","-w",help="Specify the wordlist for dns bruteforcing. DEFAULT=./wordlists/DNSlist.txt")
+    
+    apk_parser = subparsers.add_parser("apk", help="apk reconnaissance mode which include collecting URLs, root detection check, certificate check, SDK version check, decompiling APK to smali and java, extracting sensitive information, checking if the app is in debuggable mode, checking permissions, checking activities and (Exported Activites),  Check if backup is allowed, collecting strings.xml files")
+    apk_parser.add_argument("--apk",required=True, help="apk for mobile reconnaissance")
+    args = parser.parse_args()
     logo = """
   ______        _    _____              _____        
  |  ____|      | |  |  __ \            |  __ \       
@@ -387,74 +392,81 @@ if __name__ == "__main__":
                                                 __/ |
                                                |___/                                                                                          
 """
-    print_color(logo,colors.RED)
-    print("\n")
-    parser = argparse.ArgumentParser(description="This tool will help you to finish the recon phase quickly XD")
-    subparsers = parser.add_subparsers(dest="mode", help="Modes of reconnaissance")
-
-    # Passive subparser
-    passive_parser = subparsers.add_parser("passive", help="Passive reconnaissance mode which include collecting subdomains, checking whois database, zonetransfer, DNSrecordcheck, reverseDNS lookup, getting ip address range")
-    passive_parser.add_argument("-d", "--domain", required=True, help="Domain for active reconnaissance")
-    passive_parser.add_argument("--csv",help="Specify the filename,to save the subdomains in csv")
-    # Active subparser
-    active_parser = subparsers.add_parser("active", help="Active reconnaissance mode which include collecting subdomains(passive and active), cloud enumeration , web crawling and analysis, taking screenshots, headers check, and the passive stuff")
-    active_parser.add_argument("-d", "--domain", required=True, help="Domain for active reconnaissance")
-    active_parser.add_argument("--csv",help="Specify the filename,to save the subdomains in csv")
-    active_parser.add_argument("--threads","-t",help="Specify the number of threads for dns bruteforcing. DEFAULT=10")
-    active_parser.add_argument("--wordlist","-w",help="Specify the wordlist for dns bruteforcing. DEFAULT=./wordlists/DNSlist.txt")
-    # APK subparser
-    apk_parser = subparsers.add_parser("apk", help="apk reconnaissance mode which include collecting URLs, root detection check, certificate check, SDK version check, decompiling APK to smali and java, extracting sensitive information, checking if the app is in debuggable mode, checking permissions, checking activities and (Exported Activites),  Check if backup is allowed, collecting strings.xml files")
-    apk_parser.add_argument("--apk",required=True, help="apk for mobile reconnaissance")
-    args = parser.parse_args()
-
+    if args.pip:
+        pass
+    else:
+        print_color(logo,colors.RED)
+        print("\n")
     if args.mode == "passive":
-        AllColSubDom = []
-        rapiddnss = rapiddns(args.domain)
-        rapiddnsSub = rapiddnss.GetData()
-        for i in rapiddnsSub:
-            AllColSubDom.append(i)    
-        crt = Crt(args.domain)
-        CrtSub = Crt.execute(self=crt)
-        for i in CrtSub:
-            AllColSubDom.append(i)
-        wayback = waybackmachine(args.domain)
-        waybackSub = wayback.execute()
-        for i in waybackSub:
-            AllColSubDom.append(i)
-        alienvault = alienvault_lookup(args.domain)
-        alienvaultSub = alienvault.execute()
-        for i in alienvaultSub:
-            AllColSubDom.append(i)
-        print_color("All Collected Subdomains:",colors.BOLD)
-        for i in list(set(AllColSubDom)):
-            print_color(i,colors.PURPLE)
-        print_color("[+] Verifying each on of them....",colors.GREEN)    
-        Finallst = VerifySubdomains(AllColSubDom)
-        print_color("[+] verified Subdomains List: ",colors.BOLD)  
-        for i in Finallst:
-            print_color(f"{i[0]}\t\t{i[1]}",colors.PURPLE)    
-        if args.csv != None:
-            WriteInCSV(Finallst,args.csv)
-        revdnslookup = Reverse_IP_lookup(args.domain)
-        ipranges = revdnslookup.GetIPRange()
-        print_color(f"{args.domain} IP address ranges:",colors.BOLD)
-        for i in ipranges:
-            print_color(i,colors.PURPLE)
-        print_color("[+] reversing it...",colors.GREEN)
-        subdomrev = revdnslookup.execute()
-        for i in subdomrev:
-            if i != False:
-                print_color(i, colors.PURPLE)
-        query_whois(args.domain)
-        namservers  = get_name_servers(args.domain)
-        print_color("[+] Performing zone transfer",colors.BOLD)
-        for i in namservers:
-            perform_zone_transfer(args.domain,i)  
-        check_dns_records(args.domain)
-        print_color("Now to finish up the recon phase check the following interesting google dorks:",colors.BOLD)
-        Regex(args.domain)
-        print_color("Finally do not forget to check github and gitlab. Ref: https://book.hacktricks.xyz/generic-methodologies-and-resources/external-recon-methodology/github-leaked-secrets",colors.BLUE)
-        print_color("          Happy Hacking!           ",colors.GREEN)
+        if args.pip:
+            AllColSubDom = []
+            rapiddnss = rapiddns(args.domain)
+            rapiddnsSub = rapiddnss.GetData()
+            for i in rapiddnsSub:
+                AllColSubDom.append(i)    
+            crt = Crt(args.domain)
+            CrtSub = Crt.execute(self=crt)
+            for i in CrtSub:
+                AllColSubDom.append(i)
+            wayback = waybackmachine(args.domain)
+            waybackSub = wayback.execute()
+            for i in waybackSub:
+                AllColSubDom.append(i)
+            alienvault = alienvault_lookup(args.domain)
+            alienvaultSub = alienvault.execute()
+            for i in alienvaultSub:
+                AllColSubDom.append(i)  
+            Finallst = VerifySubdomains(AllColSubDom,False) 
+            for i in Finallst:
+                print_color(f"{i[0]}",colors.PURPLE)
+        else:
+            AllColSubDom = []
+            rapiddnss = rapiddns(args.domain)
+            rapiddnsSub = rapiddnss.GetData()
+            for i in rapiddnsSub:
+                AllColSubDom.append(i)    
+            crt = Crt(args.domain)
+            CrtSub = Crt.execute(self=crt)
+            for i in CrtSub:
+                AllColSubDom.append(i)
+            wayback = waybackmachine(args.domain)
+            waybackSub = wayback.execute()
+            for i in waybackSub:
+                AllColSubDom.append(i)
+            alienvault = alienvault_lookup(args.domain)
+            alienvaultSub = alienvault.execute()
+            for i in alienvaultSub:
+                AllColSubDom.append(i)
+            print_color("All Collected Subdomains:",colors.BOLD)
+            for i in list(set(AllColSubDom)):
+                print_color(i,colors.PURPLE)
+            print_color("[+] Verifying each one of them....",colors.GREEN)    
+            Finallst = VerifySubdomains(AllColSubDom,True)
+            print_color("[+] verified Subdomains List: ",colors.BOLD)  
+            for i in Finallst:
+                print_color(f"{i[0]}\t\t{i[1]}",colors.PURPLE)    
+            if args.csv != None:
+                WriteInCSV(Finallst,args.csv)
+            revdnslookup = Reverse_IP_lookup(args.domain)
+            ipranges = revdnslookup.GetIPRange()
+            print_color(f"{args.domain} IP address ranges:",colors.BOLD)
+            for i in ipranges:
+                print_color(i,colors.PURPLE)
+            print_color("[+] reversing it...",colors.GREEN)
+            subdomrev = revdnslookup.execute()
+            for i in subdomrev:
+                if i != False:
+                    print_color(i, colors.PURPLE)
+            query_whois(args.domain)
+            namservers  = get_name_servers(args.domain)
+            print_color("[+] Performing zone transfer",colors.BOLD)
+            for i in namservers:
+                perform_zone_transfer(args.domain,i)  
+            check_dns_records(args.domain)
+            print_color("Now to finish up the recon phase check the following interesting google dorks:",colors.BOLD)
+            Regex(args.domain)
+            print_color("Finally do not forget to check github and gitlab. Ref: https://book.hacktricks.xyz/generic-methodologies-and-resources/external-recon-methodology/github-leaked-secrets",colors.BLUE)
+            print_color("          Happy Hacking!           ",colors.GREEN)
     elif args.mode == "active":
         AllColSubDom = []
         rapiddnss = rapiddns(args.domain)
