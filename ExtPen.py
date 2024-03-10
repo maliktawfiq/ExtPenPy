@@ -392,12 +392,13 @@ if __name__ == "__main__":
                                                 __/ |
                                                |___/                                                                                          
 """
-    if args.pip:
-        pass
-    else:
-        print_color(logo,colors.RED)
-        print("\n")
+  
     if args.mode == "passive":
+        if args.pip:
+            pass
+        else:
+            print_color(logo,colors.RED)
+            print("\n")
         if args.pip:
             AllColSubDom = []
             rapiddnss = rapiddns(args.domain)
@@ -468,6 +469,8 @@ if __name__ == "__main__":
             print_color("Finally do not forget to check github and gitlab. Ref: https://book.hacktricks.xyz/generic-methodologies-and-resources/external-recon-methodology/github-leaked-secrets",colors.BLUE)
             print_color("          Happy Hacking!           ",colors.GREEN)
     elif args.mode == "active":
+        print_color(logo,colors.RED)
+        print("\n")
         AllColSubDom = []
         rapiddnss = rapiddns(args.domain)
         rapiddnsSub = rapiddnss.GetData()
@@ -489,7 +492,7 @@ if __name__ == "__main__":
         for i in list(set(AllColSubDom)):
             print_color(i,colors.PURPLE)
         print_color("[+] Verifying each on of them....",colors.GREEN)    
-        Finallst = VerifySubdomains(AllColSubDom)
+        Finallst = VerifySubdomains(AllColSubDom,True)
         print_color("[+] verified Subdomains List: ",colors.BOLD)  
         for i in Finallst:
             print_color(f"{i[0]}\t\t{i[1]}",colors.PURPLE)    
@@ -529,6 +532,8 @@ if __name__ == "__main__":
         print_color("Finally do not forget to check github and gitlab. Ref: https://book.hacktricks.xyz/generic-methodologies-and-resources/external-recon-methodology/github-leaked-secrets",colors.BLUE)
         print_color("          Happy Hacking!           ",colors.GREEN)
     elif args.mode == "apk":
+        print_color(logo,colors.RED)
+        print("\n")
         MobileAn = Mobile.Mobile_analysis(args.apk)
         MobileAn.execute()
         print_color("          Happy Hacking!           ",colors.GREEN)
