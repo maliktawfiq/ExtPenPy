@@ -178,7 +178,7 @@ class Mobile_analysis:
         a = APK(self.apk)
         print_color("[+] APK is signed: {}".format(a.is_signed()),colors.GREEN)
         if a.is_signed():
-    # Test if signed v1 or v2 or both
+
             print_color("[+] APK is signed with: {}".format("both V1 & V2" if a.is_signed_v1() and
             a.is_signed_v2() else "v1" if a.is_signed_v1() else "v2"),colors.GREEN)    
         
