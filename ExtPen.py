@@ -407,8 +407,9 @@ if __name__ == "__main__":
                 AllColSubDom.append(i)    
             crt = Crt(args.domain)
             CrtSub = Crt.execute(self=crt)
-            for i in CrtSub:
-                AllColSubDom.append(i)
+            if CrtSub != None:
+                for i in CrtSub:
+                    AllColSubDom.append(i)
             wayback = waybackmachine(args.domain)
             waybackSub = wayback.execute()
             for i in waybackSub:
