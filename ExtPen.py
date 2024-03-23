@@ -10,6 +10,9 @@ import whois
 from dns import zone, resolver, query, exception, rdatatype
 import Mobile
 import threading
+import xml.etree.ElementTree as ET 
+
+
 
 class colors:
     RESET = '\033[0m'
@@ -24,6 +27,118 @@ class colors:
     UNDERLINE = '\033[4m'
 def print_color(text, color):
     print(color + text + colors.RESET)
+
+
+class azure_blobs:
+    """Azure Blob Huting"""
+    baseurl = '.blob.core.windows.net'
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
+    def __init__(self, domain):
+        self.domain=domain
+        
+    def prepare_domain(self):
+        if len(self.domain.split(".")) >1:
+            self.domain=self.domain.split(".")[0]
+    
+    def prep_storage_wordlist(self):
+        storage_words=open("wordlists/wordlist.txt", 'r').read().splitlines()
+        return storage_words
+    
+    def prep_containers_wordlist(self):
+        containers_words=open("wordlists/containers.txt", 'r').read().splitlines()
+        return containers_words
+
+    def permutation(self): 
+        Company=self.domain
+    
+        words=open("wordlists/Permutations.txt", "r").read().splitlines()
+
+        file=open("wordlists/wordlist.txt", 'w') # first time we need to overwrite
+        file.write(str(Company)+'\n')
+
+        for w in words:    # first write $Company$word
+            file.write(str(Company)+w+'\n')
+        
+        file.close()
+
+        file=open("wordlists/wordlist.txt", 'a')
+
+        for w in words:     #$word$company
+            file.write(w+str(Company)+'\n')
+        
+        for w in words:     #$word$company$word
+            file.write(w+str(Company)+w+'\n')
+
+        for w in words:     #$word$word$company
+            file.write(w+w+str(Company)+'\n')
+        
+        for w in words:     #$Company$word$word
+            file.write(str(Company)+w+w + '\n')
+
+        file.close()
+
+    def accounts_requests(self,wordlist):
+        temp_storage=[]
+        temp_name=''
+        counter=0
+        wordlist_values=wordlist
+        
+        for names in wordlist_values:
+            url="https://"+names+self.baseurl
+            try:
+                req=requests.get(url,headers=self.headers, timeout=None)    
+                
+            except Exception as e:
+                if "Failed to resolve" in str(e) or "Name or service not known" in str(e):
+                    continue
+
+            temp_name=str(url).replace("https://", "")
+            temp_storage.append(temp_name)
+            print_color(f"\t[{counter}] Found Storage account: {temp_name}",colors.GREEN)
+            self.containers_requests(temp_name)
+            counter=counter + 1
+        if len(temp_storage) == 0 :
+            print_color("[-] No Storage accounts found",colors.RED)
+            exit() 
+        
+    
+    def blob_parse(self, url):
+
+        root = ET.parse("req.xml")
+        for child in root.iter():
+            if 'https://' in str(child.text):
+                print_color(f"\t\t[+] Readable files within the container: {child.text}", colors.PURPLE)
+
+    def containers_requests(self, account):
+
+        container_files=self.prep_containers_wordlist()
+
+        containers=[]
+
+        for words in container_files:
+            
+            url=f"https://{account}/{words}?restype=container&comp=list"
+            
+            list_req= requests.get(url, headers=self.headers)
+
+            if "not authorized" in list_req.text or "The specified resource does not exist" in list_req.text or "OutOfRangeInput" in list_req.text:
+                continue
+                
+            else:
+                containers.append(url)
+                print_color(f"\t[+] Found public container: \"{words}\" in {url}" , colors.PURPLE)
+                
+                file=open('req.xml', 'w').write(list_req.text)
+                self.blob_parse(url)
+
+        if len(containers)==0:
+            print_color("[-] No containers found",colors.RED)
+            return
+    
+    def execute(self):
+        self.prepare_domain()
+        self.permutation()
+        self.accounts_requests(self.prep_storage_wordlist())
 
 class Crt:
     """Get the subdomains from CRT.sh"""
@@ -472,6 +587,8 @@ if __name__ == "__main__":
     elif args.mode == "active":
         print_color(logo,colors.RED)
         print("\n")
+        Azure_blobs=azure_blobs(args.domain)
+        Azure_blobs.execute()
         AllColSubDom = []
         rapiddnss = rapiddns(args.domain)
         rapiddnsSub = rapiddnss.GetData()
