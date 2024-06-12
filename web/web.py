@@ -7,10 +7,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-
-
-
 requests.packages.urllib3.disable_warnings()
+
 class colors:
     RESET = '\033[0m'
     RED = '\033[91m'
