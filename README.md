@@ -72,7 +72,7 @@ docker run -it -v $PWD:/app extpenpy -h
 docker run -it -v "%cd%":/app extpenpy -h
 ```
 
-### how to use:
+### Usage:
 
 - ### **Passive**
 
@@ -127,7 +127,7 @@ python3 ExtPen.py active -d $domain
 
 ![Active3](imgs/Untitled8.png)
 
-- ### **APK:**
+- ### **APK (currently only for linux):**
 After running the APK analysis two directories will be created. 
 
 1. Javacode: which will contain the decompiled code
