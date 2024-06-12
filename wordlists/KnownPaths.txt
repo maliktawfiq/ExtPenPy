@@ -1,0 +1,12 @@
+.git/HEAD
+.hta
+.htaccess
+.htpasswd
+.swf
+.web
+nignx.conf
+web.config
+admin
+.config
+.conf
+robots.txt

@@ -1,0 +1,9 @@
+androguard
+apk2java
+dnspython
+python-whois
+requests
+whois
+webdriver-manager
+Selenium
+more-itertools
