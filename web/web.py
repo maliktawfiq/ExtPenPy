@@ -183,7 +183,7 @@ class webCrawl:
             for j in hed443[i]:    
                 print_color(f"{j}",colors.GREEN)    
     
-    
+    #Checking known paths
     def KnownPaths(self):
         print()
         print_color("[+] Checking Known Paths..",colors.BOLD)    
