@@ -96,6 +96,7 @@ class webCrawl:
         except Exception as error:
             print_color("[-] An exception occurred4: "+ error,colors.RED)
 
+    #Checking live domains
     def live(self):
         hed80 = []
         hed443 = []
