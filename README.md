@@ -35,6 +35,10 @@
     - Checking activities and (Exported Activities)
     - Check if  backup is allowed
     - collecting strings.xml files
+      
+### Sample Run
+https://github.com/maliktawfiq/ExtPenPy/assets/45318602/e41a9c6f-3918-4fe7-89c9-022741bc57e9
+
 ### Chrome Installation (Must be installed for screenshots module to work)
 #### Windows
 <a href="https://www.google.com/chrome/next-steps.html?installdataindex=empty&statcb=1&defaultbrowser=0#">Install chrome for windows</a>
