@@ -166,11 +166,11 @@ class webCrawl:
             except Exception as error:
                 pass
         print()
-        if mobilelinks != None:
+        if len(mobilelinks) != 0:
             print_color("[+] Mobile Application Found...",colors.BOLD)
             for i in set(mobilelinks):
                 print_color(f"Found {i} ......",colors.GREEN)
-        print_color("[+] Possible mobile application for the company. you can download it from APKpure for example and hit again with option --apk=<apk file>",colors.BOLD)
+            print_color("[+] Possible mobile application for the company. you can download it from APKpure for example and hit again with option --apk=<apk file>",colors.BOLD)
 
         print()
         
