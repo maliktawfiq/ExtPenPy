@@ -51,7 +51,11 @@ sudo dpkg -i ./google-chrome-stable_current_amd64.deb
 ```
 
 ### Installation:
-
+#### pipx installation:
+```bash
+pip3 install pipx
+pipx install extpenpy==1.3
+```
 ```bash
 git clone https://github.com/maliktawfiq/ExtPenPy.git
 cd ExtPenPy
@@ -60,7 +64,7 @@ sudo apt install apktool
 python3 ExtPen.py -h
 ```
 
-### Docker:
+#### Docker:
 
 ```bash
 git clone https://github.com/maliktawfiq/ExtPenPy.git
