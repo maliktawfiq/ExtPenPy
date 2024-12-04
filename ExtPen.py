@@ -260,7 +260,7 @@ class rapiddns:
         try:
             url = f"https://rapiddns.io/subdomain/{self.domain}#result"
             resprapiddns = requests.get(url=url)
-            pattern = f'[\.a-zA-Z0-9-]+\.{self.domain}'
+            pattern = rf'[\.a-zA-Z0-9-]+\.{self.domain}'
             subdomainslist = re.findall(pattern,resprapiddns.content.decode('utf-8'))   
             return subdomainslist 
         except Exception as error:
@@ -640,7 +640,7 @@ if __name__ == "__main__":
     apk_parser = subparsers.add_parser("apk", help="apk reconnaissance mode which include collecting URLs, root detection check, certificate check, SDK version check, decompiling APK to smali and java, extracting sensitive information, checking if the app is in debuggable mode, checking permissions, checking activities and (Exported Activites),  Check if backup is allowed, collecting strings.xml files")
     apk_parser.add_argument("--apk",required=True, help="apk for mobile reconnaissance")
     args = parser.parse_args()
-    logo = """
+    logo = rf"""
   ______        _    _____              _____        
  |  ____|      | |  |  __ \            |  __ \       
  | |__   __  __| |_ | |__) |___  _ __  | |__) |_   _ 
